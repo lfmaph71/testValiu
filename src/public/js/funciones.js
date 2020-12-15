@@ -11,7 +11,7 @@ mensajeform.addEventListener('submit', e => {
     console.log($("#mensajes").val())
     socket.emit('nuevo_mensaje', $("#mensajes").val());
     mensajes.value="";
-});
+}); 
 
 socket.on('new message', data => {
     //chat.

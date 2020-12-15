@@ -12,7 +12,7 @@ server.listen(port, () => {
 });
 
 // llamo la el archivo ws
-require('./ws')(ws);
+require('./ws')(ws); 
 
 //Pagina staticas a mostrar
 app.use(express.static(path.join(__dirname,'public')));

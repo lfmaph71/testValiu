@@ -7,7 +7,7 @@ module.exports = function (io){
         socket.on('nuevo_mensaje', data => {
             console.log(data);
             io.sockets.emit('new message', data);
-        });
+        }); 
     });
 }
 
