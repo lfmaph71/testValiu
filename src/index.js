@@ -6,6 +6,10 @@ const ws = require('socket.io')(server);
 const path = require('path');
 const port = process.env.PORT || 4000;
 
+//Pagina staticas a mostrar
+app.use(express.static(path.join(__dirname,'public')));
+//console.log(path.join(__dirname,'public'));
+
 //escuchando el servidor
 server.listen(port, () => {
     console.log('Servidor en el puerto: ' + port);
@@ -14,7 +18,5 @@ server.listen(port, () => {
 // llamo la el archivo ws
 require('./ws')(ws); 
 
-//Pagina staticas a mostrar
-app.use(express.static(path.join(__dirname,'public')));
-//console.log(path.join(__dirname,'public'));
+
 
