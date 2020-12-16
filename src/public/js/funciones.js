@@ -2,8 +2,10 @@ const socket = io();
 
 //Eventos
 function crearEtiquetas(){
-    //console.log($("#nomEtiqueta").val())
-    socket.emit('nuevo_mensaje', $("#nomEtiqueta").val());
+    let color = generaColor()
+    let valor = $("#nomEtiqueta").val()
+    socket.emit('nuevo_mensaje', {valor,
+        color});
     $("#nomEtiqueta").prop('value',"")
 }
 
@@ -15,53 +17,55 @@ socket.on('borra_etiqueta', data => {
     BorraEtiq(data);
 });
 
+socket.on('editar_etiqueta', data => {
+    editarEtiq(data);
+});
+
 //Des aqui los eventos para las etiquetas
 
 function insertaEtiquetas(datos){
     const etiquetas = document.getElementById('etiquetas');
     const etiqueta = document.createElement("div");
+    
     etiqueta.innerHTML = `
-    <div id = ${datos}>
-        <input id = ${datos} type="text" value=${datos} >
-        <button type="button" name=${datos} onclick="fnEditar(name)">Editar</button>
-        <button type="button" name =${datos} onclick="fnBorrar(name)" >Borrar</button>
+    <div id = ${datos.valor} >
+        <input id = "input${datos.valor}" type="text" value=${datos.valor} style="background-color:${datos.color}">
+        <button type="button" id = ${datos.valor} onclick="fnEditar(id)">Editar</button>
+        <button type="button" id = ${datos.valor} onclick="fnBorrar(id)">Borrar</button>
     </div>`;
     etiquetas.appendChild(etiqueta);
 }
 
 function fnEditar(name){
-    console.log($("#" + name + " input").val()); 
-    //console.log(document.getElementById('#'+ name)[0]);
-   //console.log($("#" + name + " input").val());
-
-   
+    let nomAct = $("#" + name + " input").val(); 
+    socket.emit('editar_mensaje', {name, nomAct});    
 }
 
+function editarEtiq(dato){
+    //console.log(dato.name, dato.nomAct); 
+    $("#" + dato.name).attr('id', dato.nomAct);
+    $("#input" + dato.name).attr('value',dato.nomAct);
+    $("#input" + dato.name).attr('id','input'+ dato.nomAct);
+    $("button#" + dato.name).attr('id', dato.nomAct);
+    //console.log($("div").html());
+};
+
 function fnBorrar(name){
-  socket.emit('borrar_mensaje', name);
+    console.log(name)
+    socket.emit('borrar_mensaje', name);
 }
 
 function BorraEtiq(name){
     $("#" + name).remove();
 };
 
-/*
-function dame_color_aleatorio(){
-    hexadecimal = new Array("0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F")
-    color_aleatorio = "#";
-    for (i=0;i<6;i++){
-       posarray = aleatorio(0,hexadecimal.length)
-       color_aleatorio += hexadecimal[posarray]
-    }
-    return color_aleatorio
- }
+function generaColor(){
+	var numeros, colorg;
+	numeros = "0123456789ABCDEF";
+	colorg = "#";
 
- function generarNuevoColor(){
-	var simbolos, color;
-	simbolos = "0123456789ABCDEF";
-	color = "#";
-
-	for(var i = 0; i < 6; i++){
-		color = color + simbolos[Math.floor(Math.random() * 16)];
-	}
- */
+	for(let i = 0; i < 6; i++){
+		colorg = colorg + numeros[Math.floor(Math.random() * 16)];
+    };
+    return colorg
+};
