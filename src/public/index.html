@@ -15,17 +15,14 @@
         <div class="col-md-6 mt-4">
             <div class="card">
                 <div class="card-header">
-                    <h4> Vamos al chat</h4>
+                    <h4>Adicionar Etiquetas</h4>
                 </div>
-                <div id="chat" class="card-body"></div>
-                <form id="mensajeForm" class="card-footer">
-                    <div class="input-group">
-                        <input type="text" id="mensajes" class="form-control" >
-                        <div class="input-group-append">
-                            <input type="submit" class="btn btn-warning " >
-                        </div>
+                <div class="card-body"></div>
+                    <div>
+                       <input type="text" id="nomEtiqueta" placeholder="Ingrese nombre etiqueta" >
+                       <button type="button" name="btnCrear" onclick = "crearEtiquetas()">Crear</button> 
                     </div>
-                </form>
+                
             </div>
         </div>
         <div id="etiquetas" class="col-md-6 mt-4">

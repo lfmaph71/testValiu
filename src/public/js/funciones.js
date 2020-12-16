@@ -1,66 +1,67 @@
 const socket = io();
 
-//Elementos del DOM
-const mensajeform = document.getElementById('mensajeForm');
-const mensajes = document.getElementById('mensajes');
-const chat = document.getElementById('chat');
-
 //Eventos
-mensajeform.addEventListener('submit', e => {
-    e.preventDefault();
-    console.log($("#mensajes").val())
-    //insertaEtiquetas();
-    socket.emit('nuevo_mensaje', $("#mensajes").val());
-    mensajes.value="";
-}); 
+function crearEtiquetas(){
+    //console.log($("#nomEtiqueta").val())
+    socket.emit('nuevo_mensaje', $("#nomEtiqueta").val());
+    $("#nomEtiqueta").prop('value',"")
+}
 
 socket.on('new message', data => {
-    //chat.
     insertaEtiquetas(data);
-    $("#chat").append(data + '<br/>');
+});
+
+socket.on('borra_etiqueta', data => {
+    BorraEtiq(data);
 });
 
 //Des aqui los eventos para las etiquetas
 
 function insertaEtiquetas(datos){
-    //var mensajevalor = $("#mensajes").val();
     const etiquetas = document.getElementById('etiquetas');
     const etiqueta = document.createElement("div");
     etiqueta.innerHTML = `
-    <div>
-        <p>${datos}
-            <button type="button" onclick="fnEditar()">Editar</button>
-            <button type="button" onclick="fnBorrar()" >Borrar</button>
-        </p>
+    <div id = ${datos}>
+        <input id = ${datos} type="text" value=${datos} >
+        <button type="button" name=${datos} onclick="fnEditar(name)">Editar</button>
+        <button type="button" name =${datos} onclick="fnBorrar(name)" >Borrar</button>
     </div>`;
     etiquetas.appendChild(etiqueta);
 }
 
-function fnEditar(){
-    alert("dieron click")
+function fnEditar(name){
+    console.log($("#" + name + " input").val()); 
+    //console.log(document.getElementById('#'+ name)[0]);
+   //console.log($("#" + name + " input").val());
+
+   
 }
 
-function fnBorrar(){
-    alert("dieron click")
+function fnBorrar(name){
+  socket.emit('borrar_mensaje', name);
 }
 
+function BorraEtiq(name){
+    $("#" + name).remove();
+};
 
 /*
-$(function(){
-    const socket = ws();
-    //Obteniendo los datos del DOM
-    const mensajeform = ('#mensajeForm');
-    const mensaje = ('#mensajes');
-    const chat = ('#chat');
+function dame_color_aleatorio(){
+    hexadecimal = new Array("0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F")
+    color_aleatorio = "#";
+    for (i=0;i<6;i++){
+       posarray = aleatorio(0,hexadecimal.length)
+       color_aleatorio += hexadecimal[posarray]
+    }
+    return color_aleatorio
+ }
 
-    //Eventos
-    mensajeform.submit( e => {
-        e.preventDefault();
-        socket.emit('send message', mensaje.val());
-        mensaje.val('');
-    });
+ function generarNuevoColor(){
+	var simbolos, color;
+	simbolos = "0123456789ABCDEF";
+	color = "#";
 
-
-
-})
-*/
+	for(var i = 0; i < 6; i++){
+		color = color + simbolos[Math.floor(Math.random() * 16)];
+	}
+ */

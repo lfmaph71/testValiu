@@ -10,13 +10,15 @@ const port = process.env.PORT || 4000;
 app.use(express.static(path.join(__dirname,'public')));
 //console.log(path.join(__dirname,'public'));
 
+// llamo la el archivo ws
+require('./ws')(ws); 
+
 //escuchando el servidor
 server.listen(port, () => {
     console.log('Servidor en el puerto: ' + port);
 });
 
-// llamo la el archivo ws
-require('./ws')(ws); 
+
 
 
 

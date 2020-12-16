@@ -8,6 +8,12 @@ module.exports = function (io){
             console.log(data);
             io.sockets.emit('new message', data);
         }); 
+
+        socket.on('borrar_mensaje', data => {
+            console.log('Borrado la etiqueta ' + data);
+            //console.log(data)
+            io.sockets.emit('borra_etiqueta',data);
+        });
     });
 }
 
